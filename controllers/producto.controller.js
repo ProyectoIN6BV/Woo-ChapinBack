@@ -195,6 +195,62 @@ function deleteProduct(req,res){
         }
     })
 }
+
+function uploadImgProd(req, res){    
+    var prodId = req.params.id;
+    var fileName = 'Sin imagen';
+
+        if(req.files){
+            //captura la ruta de la imagen
+            var filePath = req.files.image.path;
+            //separa en indices cada carpeta
+            //si se trabaja en linux ('\');
+            var fileSplit = filePath.split('\\');
+            //captura el nombre de la imagen
+            var fileName = fileSplit[2];
+
+            var ext = fileName.split('\.');
+            var fileExt = ext[1];
+
+            if( fileExt == 'png' ||
+                fileExt == 'jpg' ||
+                fileExt == 'jpeg' ||
+                fileExt == 'gif'){
+                    Producto.findByIdAndUpdate(prodId, {imgProducto: fileName}, {new:true}, (err, prodUpdate)=>{
+                        if(err){
+                            return res.status(500).send({message: 'Error general'});
+                        }else if(prodUpdate){
+                            return res.send({producto: prodUpdate, imgProd: prodUpdate.prodUpdate});
+                        }else{
+                            return res.status(404).send({message: 'No se actualizó'});
+                        }
+                    })
+                }else{
+                    fs.unlink(filePath, (err)=>{
+                        if(err){
+                            return res.status(500).send({message: 'Error al eliminar y la extensión no es válida'});
+                        }else{
+                            return res.status(403).send({message: 'Extensión no válida, y archivo eliminado'});
+                        }
+                    })
+                }
+        }else{
+            return res.status(404).send({message: 'No has subido una imagen'});
+        }
+}
+
+function getImgProd(req, res){
+    var fileName = req.params.fileName;
+    var pathFile = './uploads/producto/' + fileName;
+    fs.exists(pathFile, (exists)=>{
+        if(exists){                    
+            return res.sendFile(path.resolve(pathFile))
+        }else{
+           return res.status(404).send({message: 'Imagen inexistente'});
+        }
+    })
+}
+
 module.exports = {
     createProduct,
     getProducts,
@@ -204,6 +260,8 @@ module.exports = {
     viewStock,
     viewProductsBest,
     viewproductsAgotados,
-    deleteProduct
+    deleteProduct,
+    uploadImgProd,
+    getImgProd
 }
 

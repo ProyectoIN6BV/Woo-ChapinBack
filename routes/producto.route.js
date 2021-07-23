@@ -17,4 +17,7 @@ api.get("/viewStock/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],pr
 api.get("/bestSellers",[mdAuth.enshureAuth],productoController.viewProductsBest);
 api.get("/productosAgotados",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.viewproductsAgotados);
 api.delete("/deleteProduct/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.deleteProduct);
+api.put('/uploadImgProd/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.uploadImgProd);
+api.get("/getImgProd/:fileName",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.getImgProd);
+
 module.exports = api;

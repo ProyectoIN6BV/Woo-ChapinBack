@@ -24,9 +24,9 @@ app.use((req, res, next)=>{
 });
 
 
-app.use("/carrito",userRoutes);
-app.use("/carrito",categoryRoutes);
-app.use("/carrito",productRoutes);
-app.use("/carrito",carritoRoutes);
-app.use("/carrito",facturaRoutes);
+app.use("/wooChapin",userRoutes);
+app.use("/wooChapin",categoryRoutes);
+app.use("/wooChapin",productRoutes);
+app.use("/wooChapin",carritoRoutes);
+app.use("/wooChapin",facturaRoutes);
 module.exports = app;
