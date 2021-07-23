@@ -7,8 +7,8 @@ var Schema = mongoose.Schema;
 
 var categoriaModel = mongoose.Schema({
     nameCategoria: String,
-    descCategoria: String
-
+    descCategoria: String,
+    imgCategoria: String
 });
 
 
