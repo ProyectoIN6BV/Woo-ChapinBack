@@ -4,7 +4,7 @@ var jwt = require("jwt-simple");
 
 var moment = require("moment");
 
-var secretKey = 'Kinal@Admin123';
+var secretKey = 'WooChapin2021';
 
 exports.createToken = (user)=>{
     var payload = {

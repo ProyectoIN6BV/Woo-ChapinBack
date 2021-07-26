@@ -10,6 +10,7 @@ var productoSchema = mongoose.Schema({
     precio: Number,
     stock: Number,
     cantidadVendida: Number,
+    imgProducto: String,
     categoria: [{type: Schema.ObjectId, ref:'categoria'}]
 });
 
