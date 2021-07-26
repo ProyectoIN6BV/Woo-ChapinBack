@@ -10,7 +10,7 @@ var api = express.Router();
 
 api.get("/getusers",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],userController.getUsers);
 api.post("/login",userController.login);
-api.post("/registrarUsuario",userController.createUsuario);
+api.post("/register",userController.createUsuario);
 api.put("/modificarRole/:userId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],userController.modifyRole);
 api.put("/editAccount/:userId",[mdAuth.enshureAuth],userController.modifyUser);
 api.delete("/deleteAccount/:userId",[mdAuth.enshureAuth],userController.deleteUser);
