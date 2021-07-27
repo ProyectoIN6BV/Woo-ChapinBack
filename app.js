@@ -10,6 +10,9 @@ var facturaRoutes = require("./routes/factura.route");
 var categoryRoutes = require("./routes/categoria.route");
 var productRoutes = require("./routes/producto.route");
 var carritoRoutes = require("./routes/carrito.route");
+var carouselRoutes = require("./routes/carousel.route");
+var municipiosRoutes = require("./routes/municipio.route");
+var enviosRoutes = require("./routes/envio.route");
 
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -29,4 +32,8 @@ app.use("/wooChapin",categoryRoutes);
 app.use("/wooChapin",productRoutes);
 app.use("/wooChapin",carritoRoutes);
 app.use("/wooChapin",facturaRoutes);
+app.use("/wooChapin",carouselRoutes);
+app.use("/wooChapin",municipiosRoutes);
+app.use("/wooChapin",enviosRoutes);
+
 module.exports = app;
