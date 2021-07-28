@@ -10,9 +10,10 @@ var userSchema = mongoose.Schema({
     userName: String,
     password: String,
     email: String,
-    phone: String,
+    phone: String,    
     role: String,
-    facturas: [{type: Schema.ObjectId, ref: 'factura'}]
+    facturas: [{type: Schema.ObjectId, ref: 'factura'}],
+    envios: [{type: Schema.ObjectId, ref: 'envio'}]
 });
 
 

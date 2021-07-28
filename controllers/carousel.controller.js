@@ -1,0 +1,125 @@
+'use strict'
+
+
+var Carousel = require("../models/carousel.model");
+var mongoose = require("mongoose");
+
+function createCarouselDefault(req,res){
+    var nameC= "Carousel";
+    var carousel = new Carousel();
+
+    Carousel.findOne({name: nameC},(err,carouselFind)=>{
+        if(err){
+            console.log("error general",err);
+        }else if(carouselFind){
+            console.log("carousel ya existe");
+        }else{
+            carousel.name = nameC;
+
+            carousel.save((err,carouselSaved)=>{
+                if(err){
+                    console.log("error general al guardar",err);
+                }else if(carouselSaved){
+                    console.log("Carousel creado");
+                }else{
+                    console.log("no se pudo guardar el usuario");
+                }
+            })
+        }
+    })
+}
+function uploadImgCarousel(req, res){
+    var carouselId = req.params.id;
+    var fileName = 'Sin imagen';
+
+        if(req.files){
+            //captura la ruta de la imagen
+            var filePath = req.files.image.path;
+            //separa en indices cada carpeta
+            //si se trabaja en linux ('\');
+            var fileSplit = filePath.split('\\');
+            //captura el nombre de la imagen
+            var fileName = fileSplit[2];
+
+            var ext = fileName.split('\.');
+            var fileExt = ext[1];
+            
+            if( fileExt == 'png' ||
+                fileExt == 'jpg' ||
+                fileExt == 'jpeg' ||
+                fileExt == 'gif'){
+                    Carousel.findByIdAndUpdate(carouselId, {$push:{images:{image: fileName}}}, {new:true}, (err, hotelUpdate)=>{
+                        if(err){
+                            return res.status(500).send({hotel: hotelUpdate});
+                        }else if(hotelUpdate){
+                            return res.send({hotel: hotelUpdate, hotelImage: hotelUpdate.images});
+                        }else{
+                            return res.status(404).send({message: 'No se actualizó'});
+                        }
+                    })
+                }else{
+                    fs.unlink(filePath, (err)=>{
+                        if(err){
+                            return res.status(500).send({message: 'Error al eliminar y la extensión no es válida'});
+                        }else{
+                            return res.status(403).send({message: 'Extensión no válida, y archivo eliminado'});
+                        }
+                    })
+                }
+        }else{
+            return res.status(404).send({message: 'No has subido una imagen'});
+        }
+}
+
+function getImageCarousel(req, res){
+    var fileName = req.params.fileName;
+    var pathFile = './uploads/carousel/' + fileName;
+    var params = req.body;
+        fs.exists(pathFile, (exists)=>{
+        if(exists){
+            return res.sendFile(path.resolve(pathFile))
+        }else{
+           return res.status(404).send({message: 'Imagen inexistente'});
+        }
+    }) 
+}
+
+function deleteImgCarousel(req,res){
+    var carouselId = req.params.id;
+    var carousel = new Carousel();
+
+    Carousel.findOne({name: "Carousel"}, (err, carouselFind)=>{
+        if(err){
+            return res.status(500).send({message:"Error General",err});  
+        }else if(carouselFind){
+            Carousel.findByIdAndRemove(carouselFind._id, (err, carouselRemove)=>{
+                if(err){
+                    return res.status(500).send({message:"Error General",err});
+                }else if(carouselRemove){
+                    carousel.name = "Carousel";
+        
+                    carousel.save((err, carouselSaved)=>{
+                        if(err){
+                            return res.status(500).send({message:"Error General",err});
+                        }else if(carouselSaved){
+                            return res.send({message: "Imagenes eliminadas exitosamente"});
+                        }else{
+                            return res.status(403).send({message:"No se han podido guardar este registro"});
+                        }
+                    })
+                }else{
+                    return res.status(403).send({message:"No se han encontrado registros"});
+                }
+            })
+        }else{
+            return res.status(403).send({message:"No se han encontrado registros"});
+        }
+    })
+}
+
+module.exports = {
+    uploadImgCarousel,
+    getImageCarousel,
+    deleteImgCarousel,
+    createCarouselDefault
+}
