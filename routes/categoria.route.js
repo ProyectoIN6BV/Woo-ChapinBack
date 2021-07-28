@@ -13,7 +13,7 @@ api.post("/createCategory",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],categor
 api.get("/getCategory",[mdAuth.enshureAuth],categoryController.getCategory);
 api.put("/updateCategory/:categoryId",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],categoryController.updateCategory);
 api.delete("/deleteCategory/:categoryId",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],categoryController.deleteCategory);
-api.put('/uploadImgProd/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],categoryController.uploadImgCat);
+api.put('/uploadCatImg/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],categoryController.uploadImgCat);
 api.get("/getImgProd/:fileName",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],categoryController.getImgCat);
 
 
