@@ -7,7 +7,7 @@ function createMunicipio(req, res){
     var params = req.body;
     var municipio = new Municipio();
 
-    if(params.nameMunicipio && params.nameDepartamento){
+    if(params.nameMunicipio && params.precioEnvio){
         Municipio.findOne({nameMunicipio: params.nameMunicipio}, (err, municipioFind)=>{
             if(err){
                 return res.status(500).send({message:"error general al buscar",err});
@@ -15,7 +15,7 @@ function createMunicipio(req, res){
                 return res.send({message:"este municipio ya existe"});
             }else{
                 municipio.nameMunicipio = params.nameMunicipio;
-                municipio.nameDepartamento = params.nameDepartamento;
+                municipio.precioEnvio = params.precioEnvio;
 
                 municipio.save((err, muniSaved)=>{
                     if(err){
