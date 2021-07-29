@@ -12,8 +12,8 @@ api.post("/createCategory",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],categor
 api.get("/getCategory",categoryController.getCategory);
 api.put("/updateCategory/:categoryId",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],categoryController.updateCategory);
 api.delete("/deleteCategory/:categoryId",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],categoryController.deleteCategory);
-api.put('/uploadImgProd/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin, mdUpload],categoryController.uploadImgCat);
-api.get("/getImgProd/:fileName",[mdUpload],categoryController.getImgCat);
+api.put('/uploadCatImg/:id',[mdUpload],categoryController.uploadImgCat);
+api.get("/getImgCat/:fileName",[mdUpload],categoryController.getImgCat);
 
 
 module.exports = api;
