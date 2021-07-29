@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 var municipioSchema = mongoose.Schema({
     nameMunicipio: String,
-    nameDepartamento: String
+    precioEnvio: Number
 });
 
 
