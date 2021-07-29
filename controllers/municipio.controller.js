@@ -45,8 +45,43 @@ function getMunicipios(req,res){
     })
 }
 
+function updateMunicipio(req,res){
+    var params = req.body;
+    var municipioId = req.params.id;
+
+    if(params.nameMunicipio){
+        Municipio.findOne({nameMunicipio: params.nameMunicipio},(err,muniFind)=>{
+            if(err){
+                return res.status(500).send({message:"error al buscar"});
+            }else if(muniFind){
+                return res.send({message:"Municipio no disponible en uso:",muniFind});
+            }else{
+                Municipio.findByIdAndUpdate(municipioId,params,{new:true},(err,updated)=>{
+                    if(err){
+                        return res.status(500).send({message:"error general al actualizar",err});
+                    }else if(updated){
+                        return res.send({message:"Municipio actualizado:",updated})
+                    }else{
+                        return res.send({message:"no se ha podido actualizar intentelo de nuevo"});
+                    }
+                });
+            }
+        });
+    }else{
+        Municipio.findByIdAndUpdate(municipioId,params,{new:true},(err,updated)=>{
+            if(err){
+                return res.status(500).send({message:"error general al actualizar",err});
+            }else if(updated){
+                return res.send({message:"Municipio actualizado:",updated})
+            }else{
+                return res.send({message:"no se ha podido actualizar intentelo de nuevo"});
+            }
+        });
+    }
+}
 
 module.exports = {
     createMunicipio,
-    getMunicipios
+    getMunicipios,
+    updateMunicipio
 }
