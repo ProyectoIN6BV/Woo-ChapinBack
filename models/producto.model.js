@@ -8,6 +8,7 @@ var productoSchema = mongoose.Schema({
     nameProducto: String,
     descProducto: String,
     precio: Number,
+    tags:[],
     stock: Number,
     cantidadVendida: Number,
     imgProducto: String,
