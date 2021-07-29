@@ -9,7 +9,7 @@ var mdAuth = require("../middlewares/authenticates");
 var api = express.Router();
 
 api.post("/createCategory",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],categoryController.createCategory);
-api.get("/getCategory",[mdAuth.enshureAuth],categoryController.getCategory);
+api.get("/getCategory",categoryController.getCategory);
 api.put("/updateCategory/:categoryId",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],categoryController.updateCategory);
 api.delete("/deleteCategory/:categoryId",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],categoryController.deleteCategory);
 api.put('/uploadImgProd/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin, mdUpload],categoryController.uploadImgCat);
