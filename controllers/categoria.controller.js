@@ -3,7 +3,8 @@
 
 var Categoria = require("../models/categoria.model");
 var Producto = require("../models/producto.model");
-
+var fs = require("fs");
+var path = require("path")
 function createCategoryDefault(req,res){
    var nameCategory = "DEFAULT";
    var descCategory = "CATEGORÍA POR DEFAULT";

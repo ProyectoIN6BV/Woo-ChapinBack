@@ -54,12 +54,11 @@ function login(req,res){
             }else if(userFind){
                 bcrypt.compare(params.password,userFind.password,(err,passwordCheck)=>{
                     if(err){
+                        
                         return res.status(500).send({message:"error general al comparar", err});
                     }else if(passwordCheck){
                         if(params.getToken){
-                            return res.send({token: jwt.createToken(userFind),
-                                                    user: userFind
-                            });
+                            return res.send({token: jwt.createToken(userFind), user: userFind});
                         }else{
                             return res.send({message:"usuario logueado, para obtener el token, ingrese el campo getToken"});
                         }
@@ -75,6 +74,8 @@ function login(req,res){
         return res.status(403).send({message:"Ingrese los campos mínimos"});
     }
 }
+
+
 function createUsuario(req,res){
     var params = req.body;
     var user = new User();
