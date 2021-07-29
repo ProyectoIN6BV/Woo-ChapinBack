@@ -57,7 +57,9 @@ function login(req,res){
                         return res.status(500).send({message:"error general al comparar", err});
                     }else if(passwordCheck){
                         if(params.getToken){
-                            return res.send({token: jwt.createToken(userFind)});
+                            return res.send({token: jwt.createToken(userFind),
+                                                    user: userFind
+                            });
                         }else{
                             return res.send({message:"usuario logueado, para obtener el token, ingrese el campo getToken"});
                         }
