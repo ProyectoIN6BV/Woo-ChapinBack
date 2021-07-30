@@ -3,7 +3,6 @@
 var express = require("express");
 
 var userController = require("../controllers/user.controller");
-
 var mdAuth = require("../middlewares/authenticates");
 
 var api = express.Router();
@@ -16,6 +15,7 @@ api.put("/editAccount/:userId",[mdAuth.enshureAuth],userController.modifyUser);
 api.delete("/deleteAccount/:userId",[mdAuth.enshureAuth],userController.deleteUser);
 api.put("/addAddress/:id",[mdAuth.enshureAuth],userController.addAddress);
 api.delete("/removeAddress/:id",[mdAuth.enshureAuth],userController.removeAddress);
+api.get("/getusers/:id",[mdAuth.enshureAuth],userController.getDirecciones);
 
 
 module.exports = api;

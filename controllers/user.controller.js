@@ -254,11 +254,11 @@ function getUsers(req,res){
     })
 }
 
-function addAddress(req,rest){
+function addAddress(req,res){
     var params = req.body;
     var userId = req.params.id;
 
-    User.findByIdAndUpdate(userId, {$push:{direcciones: params.direccion}}, {new: true}, (err, pushAddress)=>{
+    User.findByIdAndUpdate(userId, {$push:{direcciones:{direccion: params.direccion}}}, {new: true}, (err, pushAddress)=>{
         if(err){
             return res.status(500).send({message:"error general",err});
         }else if(pushAddress){
@@ -270,7 +270,7 @@ function addAddress(req,rest){
 }
 
 
-function removeAddress(req,rest){
+function removeAddress(req,res){
     var params = req.body;
     var userId = req.params.id;
 
@@ -292,7 +292,7 @@ function getDirecciones(req,res){
         if(err){
             return res.status(500).send({message:"error general",err});
         }else if(addresFind){
-            return res.send({message:"Direcciones:",addresFind});
+            return res.send({message:"Direcciones encontradas",addresFind});
         }else{
             return res.send({message:"no hay ningún direcciones registradas"});
         }
@@ -309,5 +309,6 @@ module.exports ={
     deleteUser,
     modifyUser,
     addAddress,
-    removeAddress
+    removeAddress,
+    getDirecciones
 }
