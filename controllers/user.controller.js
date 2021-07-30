@@ -201,7 +201,19 @@ function modifyUser(req,res){
                     if(err){
                         return res.status(500).send({mesage:"error general al buscar usuario"});
                     }else if(userFind){
-                        return res.send({message:"este usuario ya esta en uso"});
+                        if(userFind.userName == params.userName && userFind._id == userId){
+                            User.findByIdAndUpdate(userId,params,{new:true},(err,userUpdated)=>{
+                                if(err){
+                                    return res.status(500).send({message:"error general al actualizar",err})
+                                }else if(userUpdated){
+                                    return res.send({message:"usuario actualizado",userUpdated});
+                                }else{
+                                    return res.status(403).send({message:"usuario no encontrado"});
+                                }
+                            })
+                        }else{
+                            return res.send({message:"este usuario ya esta en uso"});
+                        }                        
                     }else{
                         User.findByIdAndUpdate(userId,params,{new:true},(err,userUpdated)=>{
                             if(err){
@@ -242,6 +254,52 @@ function getUsers(req,res){
     })
 }
 
+function addAddress(req,res){
+    var params = req.body;
+    var userId = req.params.id;
+
+    User.findByIdAndUpdate(userId, {$push:{direcciones:{direccion: params.direccion}}}, {new: true}, (err, pushAddress)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(pushAddress){
+            return res.send({message:"Direccion agregada:",pushAddress});
+        }else{
+            return res.send({message:"no hay ningún usuario registrado"});
+        }
+    })
+}
+
+
+function removeAddress(req,res){
+    var params = req.body;
+    var userId = req.params.id;
+
+    User.findByIdAndUpdate(userId, {direcciones: params.direccion}, {new: true}, (err, pushAddress)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(pushAddress){
+            return res.send({message:"Direccion actualizada:",pushAddress});
+        }else{
+            return res.send({message:"no hay ningún usuario registrado"});
+        }
+    })
+}
+
+function getDirecciones(req,res){
+    var userId = req.params.id;
+    
+    User.findById(userId, (err, addresFind)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(addresFind){
+            return res.send({message:"Direcciones encontradas",addresFind});
+        }else{
+            return res.send({message:"no hay ningún direcciones registradas"});
+        }
+    })
+}
+
+
 module.exports ={
     createInit,
     login,
@@ -249,5 +307,8 @@ module.exports ={
     modifyRole,
     getUsers,
     deleteUser,
-    modifyUser
+    modifyUser,
+    addAddress,
+    removeAddress,
+    getDirecciones
 }

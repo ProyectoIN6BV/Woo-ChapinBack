@@ -13,7 +13,11 @@ var userSchema = mongoose.Schema({
     phone: String,    
     role: String,
     facturas: [{type: Schema.ObjectId, ref: 'factura'}],
-    envios: [{type: Schema.ObjectId, ref: 'envio'}]
+    envios: [{type: Schema.ObjectId, ref: 'envio'}],
+    direcciones: 
+    [{
+        direccion: String
+     }]
 });
 
 

@@ -7,7 +7,6 @@ var mongoose = require("mongoose");
 var fs = require("fs");
 var path = require("path");
 
-
 function createProduct(req,res){
     var params = req.body;
     var producto = new Producto();
