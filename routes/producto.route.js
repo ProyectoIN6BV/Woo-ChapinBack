@@ -10,11 +10,13 @@ var api = express.Router();
 
 api.post("/createProduct",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.createProduct);
 api.get("/getProducts",productoController.getProducts);
+api.get("/getProductsCategory/:id",productoController.getProductsCategory);
 api.post("/searchProduct",[mdAuth.enshureAuth],productoController.searchproduct);
 api.put("/updateProduct/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.updateProduct);
 api.put("/updateStock/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.updateStock);
 api.get("/viewStock/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.viewStock);
-
+api.get("/getProductId/:productId",productoController.getProductById);
+api.get("/getProductTag/:productId",productoController.getProductsTag);
 api.get("/bestSellers",productoController.viewProductsBest);
 api.get("/newProduct",productoController.viewNewProduct);
 

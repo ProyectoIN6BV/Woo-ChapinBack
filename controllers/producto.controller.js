@@ -53,6 +53,19 @@ function getProducts(req,res){
     })
 }
 
+function getProductsCategory(req,res){
+    var idCateogory = req.params.id;
+    Producto.find({categoria: idCateogory},(err,productosFind)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(productosFind){
+            return res.send({message: "Productos encontrados:",productosFind});
+        }else{
+            return res.send({message:"No se ha encontrado ningún producto"});
+        }
+    }).populate("categoria")
+}
+
 function searchproduct(req,res){
     var params = req.body;
     var ObjectId =mongoose.Types.ObjectId;
@@ -171,6 +184,40 @@ function viewStock(req,res){
     });
 }
 
+function getProductById(req,res){
+    var productId = req.params.productId;
+    Producto.findById(productId,(err,productFind)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(productFind){
+            return res.send({message:"el producto es:", productFind });
+        }else{
+            return res.send({message:"No se ha encontrado el producto"});
+        }
+    }).populate("categoria");
+}
+
+function getProductsTag(req,res){
+    var productId = req.params.productId;
+    Producto.findById(productId,(err,productFind)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(productFind){
+            
+            Producto.find({  tags: { $in: productFind.tags } } ,(err,productFind1)=>{
+                if(err){
+                    return res.status(500).send({message:"error general",err});
+                }else if(productFind1){
+                    return res.send({message:"productos similares:", productFind1});
+                }else{
+                    return res.send({message:"No se ha encontrado el producto"});
+                }
+            }).populate("categoria")
+        }else{
+            return res.send({message:"No se ha encontrado el producto"});
+        }
+    })
+}
 
 function viewProductsBest(req,res){
     Producto.find({},(err,productosFind)=>{
@@ -290,6 +337,9 @@ module.exports = {
     deleteProduct,
     uploadImgProd,
     getImgProd,
-    viewNewProduct
+    viewNewProduct,
+    getProductsCategory,
+    getProductById,
+    getProductsTag
 }
 
