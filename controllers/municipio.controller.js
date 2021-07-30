@@ -54,7 +54,19 @@ function updateMunicipio(req,res){
             if(err){
                 return res.status(500).send({message:"error al buscar"});
             }else if(muniFind){
-                return res.send({message:"Municipio no disponible en uso:",muniFind});
+                if(muniFind.nameMunicipio == params.nameMunicipio && muniFind._id == municipioId){
+                    Municipio.findByIdAndUpdate(municipioId,params,{new:true},(err,updated)=>{
+                        if(err){
+                            return res.status(500).send({message:"error general al actualizar",err});
+                        }else if(updated){
+                            return res.send({message:"Municipio actualizado:",updated})
+                        }else{
+                            return res.send({message:"no se ha podido actualizar intentelo de nuevo"});
+                        }
+                    });
+                }else{
+                    return res.send({message:"Municipio no disponible en uso:",muniFind});
+                }                
             }else{
                 Municipio.findByIdAndUpdate(municipioId,params,{new:true},(err,updated)=>{
                     if(err){
@@ -80,8 +92,24 @@ function updateMunicipio(req,res){
     }
 }
 
+function deleteMunicipio(req, res){
+    let muniId = req.params.id;
+    
+    Municipio.findByIdAndRemove(muniId, (err, muniRemove)=>{
+        if(err){
+            return res.status(500).send({message: 'Error general'})
+        }else if(muniRemove){
+            return res.send({message: 'Municipio eliminado', muniRemove:muniRemove})
+        }else{
+            return res.status(404).send({message: 'Municipio no encontrado o ya eliminado'})
+        }
+    })
+}
+
+
 module.exports = {
     createMunicipio,
     getMunicipios,
-    updateMunicipio
+    updateMunicipio,
+    deleteMunicipio
 }

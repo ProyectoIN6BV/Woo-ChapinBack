@@ -14,4 +14,8 @@ api.post("/register",userController.createUsuario);
 api.put("/modificarRole/:userId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],userController.modifyRole);
 api.put("/editAccount/:userId",[mdAuth.enshureAuth],userController.modifyUser);
 api.delete("/deleteAccount/:userId",[mdAuth.enshureAuth],userController.deleteUser);
+api.put("/addAddress/:id",[mdAuth.enshureAuth],userController.addAddress);
+api.delete("/removeAddress/:id",[mdAuth.enshureAuth],userController.removeAddress);
+
+
 module.exports = api;
