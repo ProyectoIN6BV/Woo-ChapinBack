@@ -4,7 +4,8 @@
 var Producto = require("../models/producto.model");
 var Categoria = require("../models/categoria.model");
 var mongoose = require("mongoose");
-
+var fs = require("fs");
+var path = require("path")
 function createProduct(req,res){
     var params = req.body;
     var producto = new Producto();
@@ -21,6 +22,7 @@ function createProduct(req,res){
                 producto.stock = params.stock;
                 producto.categoria = params.categoria;
                 producto.cantidadVendida = 0;
+                producto.tags = params.tags;
                 producto.save((err,productoSaved)=>{
                     if(err){
                         return res.status(500).send({message:"error general al guardar", err});
@@ -86,13 +88,25 @@ function searchproduct(req,res){
 function updateProduct(req,res){
     var params = req.body;
     var productId = req.params.productId;
-    if(!params.stock){
+    
         if(params.nameProducto){
             Producto.findOne({nameProducto:params.nameProducto},(err,productoFind)=>{
                 if(err){
                     return res.status(500).send({message:"error general al buscar",err});
                 }else if(productoFind){
-                    return res.send({message:"este nombre de producto ya está en uso"});
+                    if(productoFind.nameProducto == params.nameProducto && productoFind._id == params._id){
+                        Producto.findByIdAndUpdate(productId,params,{new:true},(err,updated)=>{
+                            if(err){
+                                return res.status(500).send({message:"error general al actualizar",err});
+                            }else if(updated){
+                                return res.send({message:"producto actualizado",updated})
+                            }else{
+                                return res.status(403).send({message:"no se pudo actualizar el producto, intentalo de nuevo"});
+                            }
+                        })
+                    }else{
+                        return res.send({message:"este nombre de producto ya está en uso"});
+                    }
                 }else{
                     Producto.findByIdAndUpdate(productId,params,{new:true},(err,updated)=>{
                         if(err){
@@ -116,9 +130,7 @@ function updateProduct(req,res){
                 }
             })
         }
-    }else{
-        return res.send({message:"si desea editar el stock hay otra función dedicada a eso"});
-    }
+    
     
 }
 
@@ -197,6 +209,7 @@ function deleteProduct(req,res){
 }
 
 function uploadImgProd(req, res){    
+    console.log("hola imagen")
     var prodId = req.params.id;
     var fileName = 'Sin imagen';
 
