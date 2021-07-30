@@ -14,7 +14,10 @@ api.post("/searchProduct",[mdAuth.enshureAuth],productoController.searchproduct)
 api.put("/updateProduct/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.updateProduct);
 api.put("/updateStock/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.updateStock);
 api.get("/viewStock/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.viewStock);
-api.get("/bestSellers",[mdAuth.enshureAuth],productoController.viewProductsBest);
+
+api.get("/bestSellers",productoController.viewProductsBest);
+api.get("/newProduct",productoController.viewNewProduct);
+
 api.get("/productosAgotados",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.viewproductsAgotados);
 api.put("/deleteProduct/:productId",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],productoController.deleteProduct);
 api.put('/uploadImgProd/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin, mdUpload],productoController.uploadImgProd);

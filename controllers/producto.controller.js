@@ -5,7 +5,9 @@ var Producto = require("../models/producto.model");
 var Categoria = require("../models/categoria.model");
 var mongoose = require("mongoose");
 var fs = require("fs");
-var path = require("path")
+var path = require("path");
+
+
 function createProduct(req,res){
     var params = req.body;
     var producto = new Producto();
@@ -179,7 +181,19 @@ function viewProductsBest(req,res){
         }else{
             return res.status(403).send({message:"No hay ningún producto registrado"});
         }
-    }).sort({cantidadVendida:-1}).populate("categoria");
+    }).sort({cantidadVendida:-1}).populate("categoria").limit(6);
+}
+
+function viewNewProduct(req,res){
+    Producto.find({},(err,productosFind)=>{
+        if(err){
+            return res.status(500).send({message:"error general al ver Productos",err});
+        }else if(productosFind){
+            return res.send({message:"Los productos más vendidos son:",productosFind});
+        }else{
+            return res.status(403).send({message:"No hay ningún producto registrado"});
+        }
+    }).sort({ "_id": -1}).limit(6).populate("categoria");
 }
 
 
@@ -275,6 +289,7 @@ module.exports = {
     viewproductsAgotados,
     deleteProduct,
     uploadImgProd,
-    getImgProd
+    getImgProd,
+    viewNewProduct
 }
 
