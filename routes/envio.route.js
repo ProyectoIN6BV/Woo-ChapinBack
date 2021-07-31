@@ -9,7 +9,7 @@ var mdAuth = require("../middlewares/authenticates");
 
 var api = express.Router();
 
-api.post("/createEnvio/:id/:Uid",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],envioController.createEnvio);
+api.post("/createEnvio/:id/:Uid/:facId",[mdAuth.enshureAuth],envioController.createEnvio);
 api.get("/getEnvios",[mdAuth.enshureAuth],envioController.getEnvios);
 api.put("/updateEnvio/:id",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],envioController.updateEnvio);
 api.delete("/deleteCategory/:id",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],envioController.deleteEnvio);

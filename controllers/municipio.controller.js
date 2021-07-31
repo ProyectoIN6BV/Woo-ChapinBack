@@ -38,7 +38,7 @@ function getMunicipios(req,res){
         if(err){
             return res.status(500).send({message:"error general al buscar",err});
         }else if(municipios){
-            return res.send({message:"Municipios encontrados:",municipios});
+            return res.send({message:"Municipios encontrados:", municipios});
         }else{
             return res.send({message:"no se ha encontrado municipios registrados"});
         }

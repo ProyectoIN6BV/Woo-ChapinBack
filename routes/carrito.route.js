@@ -8,7 +8,7 @@ var mdAuth = require("../middlewares/authenticates");
 var api = express.Router();
 
 api.post("/:userId/agregarCarrito/:productId",[mdAuth.enshureAuth],carritoController.AgregarCarrito);
-api.delete("/:userId/deleteProductoCarrito/:productId",[mdAuth.enshureAuth],carritoController.eliminarProductoCarrito);
+api.put("/:userId/deleteProductoCarrito/:productId",[mdAuth.enshureAuth],carritoController.eliminarProductoCarrito);
 api.delete("/:userId/deleteProductoCompletoCarrito/:productId",[mdAuth.enshureAuth],carritoController.eliminarDetalle);
 api.get("/:userId/viewCarrito",[mdAuth.enshureAuth],carritoController.viewCarrito);
-module.exports = api;
+module.exports = api;   

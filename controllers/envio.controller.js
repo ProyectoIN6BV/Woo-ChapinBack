@@ -8,15 +8,16 @@ function createEnvio(req, res){
     var envio = new Envio();
     var muniId = req.params.id;
     var userId = req.params.Uid;
-
+    var facId = req.params.facId;
     if(params.nameReceiver && params.lastNameReceiver && params.phone && params.address && params.specificAddress && params.reference){
-       
+        
         envio.nameReceiver = params.nameReceiver;
         envio.lastNameReceiver = params.lastNameReceiver;
         envio.phone = params.phone;
         envio.address = params.address;
         envio.specificAddress = params.specificAddress;
         envio.reference = params.reference;
+        envio.factura = facId;
 
         envio.save((err, envioSaved)=>{
             if(err){

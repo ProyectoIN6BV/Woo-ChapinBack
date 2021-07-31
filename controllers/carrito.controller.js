@@ -285,7 +285,7 @@ function viewCarrito(req,res){
             }else{
                 return res.send({message:"el carrito está vacío"});
             }
-        }).populate("detalles")
+        }).populate({path: "detalles", populate:{path:"producto"}})
     }
 }
 module.exports = {
