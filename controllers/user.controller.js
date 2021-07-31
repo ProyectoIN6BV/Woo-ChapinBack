@@ -274,11 +274,11 @@ function removeAddress(req,res){
     var params = req.body;
     var userId = req.params.id;
 
-    User.findByIdAndUpdate(userId, {direcciones: params.direccion}, {new: true}, (err, pushAddress)=>{
+    User.updateMany({_id: userId}, {$pull:{direcciones:{direccion: params.direccion}}} ,{new: true}, (err, pushAddress)=>{
         if(err){
             return res.status(500).send({message:"error general",err});
         }else if(pushAddress){
-            return res.send({message:"Direccion actualizada:",pushAddress});
+            return res.send({message:"Direccion eliminada:",pushAddress});
         }else{
             return res.send({message:"no hay ningún usuario registrado"});
         }
@@ -299,6 +299,42 @@ function getDirecciones(req,res){
     })
 }
 
+function countUser(req,res){
+
+    User.find({},(err,userCount)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(userCount){
+            return res.send({message:"Usuarios",userCount});
+        }else{
+            return res.send({message:"no hay usuarios registrados"});
+        }
+    }).count();
+}
+
+
+function updateAddress(req,res){
+    var params = req.body;
+    var userId = req.params.id;
+    var addresId = req.params.idA;
+    let user = new User;
+
+    let docToUpdate = {
+        _id: addresId,
+        direccion: params.direccion
+    }
+
+    User.updateMany({_id: userId}, {$pull:{direcciones:{direccion: params.direccion}}} ,{new: true}, (err, pushAddress)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(pushAddress){
+            return res.send({message:"Direccion agregada:",pushAddress});
+        }else{
+            return res.send({message:"no hay ningún usuario registrado"});
+        }
+    })
+}
+
 
 module.exports ={
     createInit,
@@ -310,5 +346,7 @@ module.exports ={
     modifyUser,
     addAddress,
     removeAddress,
-    getDirecciones
+    getDirecciones,
+    countUser,
+    updateAddress
 }
