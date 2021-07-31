@@ -9,7 +9,6 @@ var facturaSchema = mongoose.Schema({
     fecha: String, 
     total:Number,
     nit: String,
-    user: {type: Schema.ObjectId, ref:'user'},
 });
 
 module.exports = mongoose.model('factura',facturaSchema);

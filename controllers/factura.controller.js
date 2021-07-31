@@ -5,6 +5,7 @@ var Factura = require("../models/factura.model");
 var Carrito = require("../models/carrito.model");
 var Producto = require("../models/producto.model")
 var Detalle = require("../models/detalle.model");
+var User = require("../models/user.model");
 var moment = require("moment");
 var mongoose = require("mongoose");
 
@@ -80,7 +81,15 @@ function crearFactura(req,res,next){
                                                         if(err){
                                                             return res.status(500).send({message:"error general al buscar factura",err});
                                                         }else if(facturaFind){
-                                                            res.send({message:"Factura creada exitosamente:",facturaFind});
+                                                            User.findByIdAndUpdate(userId,{$push:{facturas:facturaFind._id}},{new:true},(err,userUpdate)=>{
+                                                                    if(err){
+                                                                        return res.status(500).send({message:"error general"});
+                                                                    }else if(userUpdate){
+                                                                        return res.send({message: "Factura guardada con exito", userUpdate})
+                                                                    }else{
+                                                                        return res.status(403).send({message:"No se pudo guardar la factura"});
+                                                                    }
+                                                            });
                                                         }else{
                                                             return res.status(403).send({message:"no se encontró la factura intentelo de nuevo"})
                                                         }
@@ -128,6 +137,7 @@ function verMisFacturas(req,res){
         }).populate("detalles");
     }
 }
+
 function buscarFacturaAdmin(req,res){
     var userId = req.params.userId;
     Factura.find({user:userId},(err,facturaFind)=>{
@@ -162,6 +172,7 @@ function BuscarFacturaProducto(req,res){
         }
     })
 }
+
 function getFacturasAdmin(req,res){
     Factura.find({},(err,facturaFind)=>{
         if(err){
@@ -188,12 +199,22 @@ function countPedido(req,res){
 }
 
 function totalVendido(req,res){
+    let facLength = "";
+    let sum = 0;
 
     Factura.find({},(err,pedidoCount)=>{
         if(err){
             return res.status(500).send({message:"error general",err});
         }else if(pedidoCount){
-            return res.send({message:"Pedidos", total: pedidoCount.total + pedidoCount.total});
+
+            facLength = Object.keys(pedidoCount).length;
+            console.log(facLength);
+
+            for (let i = 0; i < facLength; i++){
+                sum = Number.parseInt(pedidoCount.total) + sum;
+            }
+            
+            return res.send({message: "Total vendido", sum})
         }else{
             return res.send({message:"no hay pedidos registrados"});
         }
