@@ -27,7 +27,7 @@ function createEnvio(req, res){
                     if(err){
                         return res.status(500).send({message:"error general"});
                     }else if(municipioUpdate){
-                        User.findByIdAndUpdate(userId,{$pull:{envios:envioSaved._id}},{new:true},(err,userUpdate)=>{
+                        User.findByIdAndUpdate(userId,{$push:{envios:envioSaved._id}},{new:true},(err,userUpdate)=>{
                             if(err){
                                 return res.status(500).send({message:"error general"});
                             }else if(userUpdate){
