@@ -85,7 +85,7 @@ function crearFactura(req,res,next){
                                                                     if(err){
                                                                         return res.status(500).send({message:"error general"});
                                                                     }else if(userUpdate){
-                                                                        return res.send({message: "Factura guardada con exito", userUpdate})
+                                                                        return res.send({message: "Factura guardada con exito", facturaFind})
                                                                     }else{
                                                                         return res.status(403).send({message:"No se pudo guardar la factura"});
                                                                     }
