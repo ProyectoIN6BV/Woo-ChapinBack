@@ -172,10 +172,38 @@ function getFacturasAdmin(req,res){
     }).populate("detalles");
 }
 
+function countPedido(req,res){
+
+    Factura.find({},(err,pedidoCount)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(pedidoCount){
+            return res.send({message:"Pedidos",pedidoCount});
+        }else{
+            return res.send({message:"no hay pedidos registrados", pedidoCount:0});
+        }
+    }).count();
+}
+
+function totalVendido(req,res){
+
+    Factura.find({},(err,pedidoCount)=>{
+        if(err){
+            return res.status(500).send({message:"error general",err});
+        }else if(pedidoCount){
+            return res.send({message:"Pedidos", total: pedidoCount.total + pedidoCount.total});
+        }else{
+            return res.send({message:"no hay pedidos registrados"});
+        }
+    });
+}
+
 module.exports={
     crearFactura,
     verMisFacturas,
     buscarFacturaAdmin,
     BuscarFacturaProducto,
-    getFacturasAdmin
+    getFacturasAdmin,
+    countPedido,
+    totalVendido
 }

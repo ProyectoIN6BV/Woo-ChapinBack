@@ -14,4 +14,7 @@ api.post("/:userId/crearFactura",[mdAuth.enshureAuth],facturaController.crearFac
 api.get("/:userId/buscarFacturaUsuario",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],facturaController.buscarFacturaAdmin);
 api.get("/:facturaId/buscarFacturaProductos",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],facturaController.BuscarFacturaProducto);
 api.get("/verFacturas",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],facturaController.getFacturasAdmin);
+api.get("/countPedido",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],facturaController.countPedido);
+api.get("/totalVendido",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],facturaController.totalVendido);
+
 module.exports = api;
