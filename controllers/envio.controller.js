@@ -23,11 +23,11 @@ function createEnvio(req, res){
             if(err){
                 return res.status(500).send({message:"error general"});
             }else if(envioSaved){
-                Envio.findByIdAndUpdate(envioSaved._id,{$pull:{municipio:muniId}},{new:true},(err,municipioUpdate)=>{
+                Envio.findByIdAndUpdate(envioSaved._id,{$push:{municipio:muniId}},{new:true},(err,municipioUpdate)=>{
                     if(err){
                         return res.status(500).send({message:"error general"});
                     }else if(municipioUpdate){
-                        User.findByIdAndUpdate(userId,{$pull:{envios:envioSaved._id}},{new:true},(err,userUpdate)=>{
+                        User.findByIdAndUpdate(userId,{$push:{envios:envioSaved._id}},{new:true},(err,userUpdate)=>{
                             if(err){
                                 return res.status(500).send({message:"error general"});
                             }else if(userUpdate){
