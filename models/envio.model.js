@@ -11,7 +11,8 @@ var envioSchema = mongoose.Schema({
     address: String,
     specificAddress: String,
     reference: String,
-    municipio: [{type: Schema.ObjectId, ref:'municipio'}]
+    municipio: [{type: Schema.ObjectId, ref:'municipio'}],
+    factura: [{type: Schema.ObjectId, ref:'factura'}]
 });
 
 

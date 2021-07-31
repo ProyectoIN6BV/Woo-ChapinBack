@@ -13,6 +13,8 @@ function crearFactura(req,res,next){
     var userId = req.params.userId;
     var params = req.body;
     var factura = new Factura();
+
+    console.log(params)
     if(req.user.sub != userId){
         return res.status(500).send({message:"no tienes permiso para realizar esta acción"});
     }else{
