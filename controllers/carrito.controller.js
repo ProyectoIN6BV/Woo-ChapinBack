@@ -13,128 +13,141 @@ function AgregarCarrito(req, res){
     
     var detalle = new Detalle();
     var carrito = new Carrito();
-    if(req.user.sub != userId){
-        return res.status(500).send({Message:"No tienes permiso para realizar esta acción"});
-    }else{
-        Carrito.findOne({user:userId},(err,carritoFind)=>{
-            if(err){
-                return res.status(500).send({Message:"error general",err});
-            }else if(carritoFind){
-               Producto.findById(productId,(err,productoFind)=>{
-                   if(err){
-                        return res.status(500).send({Message:"error general",err});
-                   }else if(productoFind){
-                        Detalle.findOne({_id:carritoFind.detalles,producto:productoFind._id},(err,detalleFind)=>{
-                            if(err){
-                                return res.status(500).send({Message:"error general",err});
-                            }else if(detalleFind){
-                                var params2={
-                                    cantidad: detalleFind.cantidad+(params.cantidad*1),
-                                    subTotal: productoFind.precio*( detalleFind.cantidad+(params.cantidad*1))
-                                }
-                                Detalle.findByIdAndUpdate(detalleFind._id,params2,{new:true},(err,detalleupdated)=>{
-                                    if(err){
-                                        return res.status(500).send({Message:"error general",err});
-                                    }else if(detalleupdated){
-                                        var carritoupdate ={
-                                            total: carritoFind.total+(params.cantidad*productoFind.precio)
-                                        }
-                                        Carrito.findByIdAndUpdate(carritoFind._id,carritoupdate,{new:true},(err,carritoUp)=>{
-                                            if(err){
-                                                return res.status(500).send({Message:"error general",err});
-                                            }else if(carritoUp){
-                                                return res.send({message:"carrito actualizado",carritoUp});
-                                            }else{
-                                                return res.send({message:"no se ha encontrado el carrito"});
+    Producto.findById(productId,(err,productoFindV)=>{
+        if(err){
+            return res.status(500).send({Message:"error general",err});
+        }else if(productoFindV){
+            if(productoFindV.stock > 0){
+                if(req.user.sub != userId){
+                    return res.status(500).send({Message:"No tienes permiso para realizar esta acción"});
+                }else{
+                    Carrito.findOne({user:userId},(err,carritoFind)=>{
+                        if(err){
+                            return res.status(500).send({Message:"error general",err});
+                        }else if(carritoFind){
+                           Producto.findById(productId,(err,productoFind)=>{
+                               if(err){
+                                    return res.status(500).send({Message:"error general",err});
+                               }else if(productoFind){
+                                    Detalle.findOne({_id:carritoFind.detalles,producto:productoFind._id},(err,detalleFind)=>{
+                                        if(err){
+                                            return res.status(500).send({Message:"error general",err});
+                                        }else if(detalleFind){
+                                            var params2={
+                                                cantidad: detalleFind.cantidad+(params.cantidad*1),
+                                                subTotal: productoFind.precio*( detalleFind.cantidad+(params.cantidad*1))
                                             }
-                                        }).populate("detalles");
-                                    }else{
-                                        return res.send({message:"no se ha encontrado el detalle"})
-                                    }
-                                })
-                                
-                            }else{
-                               Producto.findById(productId,(err,productofind2)=>{
-                                    if(err){
-                                        return res.status(500).send({message:"error general"});
-                                    }else if(productofind2){
-                                        detalle.cantidad = params.cantidad;
-                                        detalle.subTotal = params.cantidad*(productofind2.precio);
-                                        detalle.producto = productofind2._id;
-                                        detalle.save((err,detalleSaved)=>{
-                                            if(err){
-                                                return res.status(500).send({message:"error general",err});
-                                            }else if(detalleSaved){
-                                                var params3 = {
-                                                    total: carritoFind.total+(detalleSaved.subTotal*1)
-                                                }
-                                                Carrito.findByIdAndUpdate(carritoFind._id,{$push:{detalles:detalleSaved._id},total:params3.total},{new:true},(err,carritoUpdated)=>{
-                                                    if(err){
-                                                        return res.status(500).send({message:"error general",err});
-                                                    }else if(carritoUpdated){
-                                                        return res.send({message:"el carrito se ha actualizado correctamente:",carritoUpdated});
-                                                    }else{
-                                                        return res.send({message:"no se ha encontrado el carrito"});
+                                            Detalle.findByIdAndUpdate(detalleFind._id,params2,{new:true},(err,detalleupdated)=>{
+                                                if(err){
+                                                    return res.status(500).send({Message:"error general",err});
+                                                }else if(detalleupdated){
+                                                    var carritoupdate ={
+                                                        total: carritoFind.total+(params.cantidad*productoFind.precio)
                                                     }
-                                                }).populate("detalles");
-                                            }else{
-                                                return res.send({message:"no se ha podido guardar el detalle"});
-                                            }
-                                        })
-                                    }else{
-                                        return res.send({message:"no se ha encontrado el producto"});
-                                    }
-                               })
-                            }
-                        })
-                   }else{
-                       return res.send({message:"no se ha encontrado el producto"});
-                   }
-               })
+                                                    Carrito.findByIdAndUpdate(carritoFind._id,carritoupdate,{new:true},(err,carritoUp)=>{
+                                                        if(err){
+                                                            return res.status(500).send({Message:"error general",err});
+                                                        }else if(carritoUp){
+                                                            return res.send({message:"carrito actualizado",carritoUp});
+                                                        }else{
+                                                            return res.send({message:"no se ha encontrado el carrito"});
+                                                        }
+                                                    }).populate("detalles");
+                                                }else{
+                                                    return res.send({message:"no se ha encontrado el detalle"})
+                                                }
+                                            })
+                                            
+                                        }else{
+                                           Producto.findById(productId,(err,productofind2)=>{
+                                                if(err){
+                                                    return res.status(500).send({message:"error general"});
+                                                }else if(productofind2){
+                                                    detalle.cantidad = params.cantidad;
+                                                    detalle.subTotal = params.cantidad*(productofind2.precio);
+                                                    detalle.producto = productofind2._id;
+                                                    detalle.save((err,detalleSaved)=>{
+                                                        if(err){
+                                                            return res.status(500).send({message:"error general",err});
+                                                        }else if(detalleSaved){
+                                                            var params3 = {
+                                                                total: carritoFind.total+(detalleSaved.subTotal*1)
+                                                            }
+                                                            Carrito.findByIdAndUpdate(carritoFind._id,{$push:{detalles:detalleSaved._id},total:params3.total},{new:true},(err,carritoUpdated)=>{
+                                                                if(err){
+                                                                    return res.status(500).send({message:"error general",err});
+                                                                }else if(carritoUpdated){
+                                                                    return res.send({message:"el carrito se ha actualizado correctamente:",carritoUpdated});
+                                                                }else{
+                                                                    return res.send({message:"no se ha encontrado el carrito"});
+                                                                }
+                                                            }).populate("detalles");
+                                                        }else{
+                                                            return res.send({message:"no se ha podido guardar el detalle"});
+                                                        }
+                                                    })
+                                                }else{
+                                                    return res.send({message:"no se ha encontrado el producto"});
+                                                }
+                                           })
+                                        }
+                                    })
+                               }else{
+                                   return res.send({message:"no se ha encontrado el producto"});
+                               }
+                           })
+                        }else{
+                            Producto.findById(productId,(err,productoFind3)=>{
+                                if(err){
+                                    return res.status(500).send({message:"error general al buscar producto",err});
+                                }else if(productoFind3){
+                                    detalle.producto = productId;
+                                    detalle.cantidad = params.cantidad;
+                                    detalle.subTotal = params.cantidad*(productoFind3.precio);
+                                    detalle.save((err,detalleSaved2)=>{
+                                        if(err){
+                                            return res.status(500).send({message:"error general al guardar producto",err});
+                                        }else if(detalleSaved2){
+                                            carrito.detalles = detalleSaved2._id;
+                                            carrito.total = detalle.subTotal;
+                                            carrito.user = userId;
+                                            carrito.save((err,carritoSaved)=>{
+                                                if(err){
+                                                    return res.status(500).send({message:"error general al crear carrito",err});
+                                                }else if(carritoSaved){
+                                                    Carrito.findById(carritoSaved._id,(err,carritoFind2)=>{
+                                                        if(err){
+                                                            return res.status(500).send({message:"error general al buscar", err});
+                                                        }else if(carritoFind2){
+                                                            return res.send({message:"carrito creado exitosamente",carritoFind2});
+                                                        }else{
+                                                            return res.send({message:"no se ha podido mostrar el carrito"});
+                                                        }
+                                                    }).populate("detalles")
+                                                }else{
+                                                    return res.send({message:"no se ha podido guardar el carrito"});
+                                                }
+                                            })
+                                        }else{
+                                            return res.send({message:"no se ha podido guardar el detalle"});
+                                        }
+                                    })
+                                }else{
+                                    return res.send({message:"no se ha encontrado el producto"});
+                                }
+                            })
+            
+                        }
+                    })
+                }
             }else{
-                Producto.findById(productId,(err,productoFind3)=>{
-                    if(err){
-                        return res.status(500).send({message:"error general al buscar producto",err});
-                    }else if(productoFind3){
-                        detalle.producto = productId;
-                        detalle.cantidad = params.cantidad;
-                        detalle.subTotal = params.cantidad*(productoFind3.precio);
-                        detalle.save((err,detalleSaved2)=>{
-                            if(err){
-                                return res.status(500).send({message:"error general al guardar producto",err});
-                            }else if(detalleSaved2){
-                                carrito.detalles = detalleSaved2._id;
-                                carrito.total = detalle.subTotal;
-                                carrito.user = userId;
-                                carrito.save((err,carritoSaved)=>{
-                                    if(err){
-                                        return res.status(500).send({message:"error general al crear carrito",err});
-                                    }else if(carritoSaved){
-                                        Carrito.findById(carritoSaved._id,(err,carritoFind2)=>{
-                                            if(err){
-                                                return res.status(500).send({message:"error general al buscar", err});
-                                            }else if(carritoFind2){
-                                                return res.send({message:"carrito creado exitosamente",carritoFind2});
-                                            }else{
-                                                return res.send({message:"no se ha podido mostrar el carrito"});
-                                            }
-                                        }).populate("detalles")
-                                    }else{
-                                        return res.send({message:"no se ha podido guardar el carrito"});
-                                    }
-                                })
-                            }else{
-                                return res.send({message:"no se ha podido guardar el detalle"});
-                            }
-                        })
-                    }else{
-                        return res.send({message:"no se ha encontrado el producto"});
-                    }
-                })
-
+                return res.send({message:"no tiene suficiente stock"});
             }
-        })
-    }
+        }else{
+            return res.send({message:"no se encontró el producto"});
+        }
+    })
+    
 
 }
 
