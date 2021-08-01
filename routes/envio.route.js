@@ -13,6 +13,7 @@ api.post("/createEnvio/:id/:Uid/:facId",[mdAuth.enshureAuth],envioController.cre
 api.get("/getEnvios/:id",[mdAuth.enshureAuth],envioController.getEnvios);
 api.put("/updateEnvio/:id",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],envioController.updateEnvio);
 api.delete("/deleteCategory/:id",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],envioController.deleteEnvio);
+api.get("/getEnviosAdmin",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],envioController.getEnviosAdmin);
 
 
 module.exports = api;

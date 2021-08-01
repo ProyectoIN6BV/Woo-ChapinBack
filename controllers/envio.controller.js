@@ -92,9 +92,23 @@ function getEnvios(req, res){
     }).populate("envios");
 }
 
+function getEnviosAdmin(req, res){
+    Envio.find({},(err,envioFind)=>{
+        if(err){
+            return res.status(500).send({message:"error general"});
+        }else if(envioFind){
+            return res.send({message: "Envios: ", envioFind});
+        }else{
+            return res.status(403).send({message:"No se encontraron registros"});
+        }
+    }).populate({path: "factura", populate:{path:"detalles", populate:{path:"producto"}}})
+}
+
+
 module.exports = {
     getEnvios,
     deleteEnvio,
     updateEnvio,
-    createEnvio
+    createEnvio,
+    getEnviosAdmin
 }
