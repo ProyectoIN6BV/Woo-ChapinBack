@@ -3,7 +3,8 @@
 
 var Carousel = require("../models/carousel.model");
 var mongoose = require("mongoose");
-
+var fs = require("fs");
+var path = require("path")
 function createCarouselDefault(req,res){
     var nameC= "Carousel";
     var carousel = new Carousel();
@@ -15,7 +16,15 @@ function createCarouselDefault(req,res){
             console.log("carousel ya existe");
         }else{
             carousel.name = nameC;
-
+            carousel.images[0]={
+                image: "carousel.jpg"
+            }
+            carousel.images[1]={
+                image: "carousel1.jpg"
+            }
+            carousel.images[2]={
+                image: "carousel2.jpg"
+            }
             carousel.save((err,carouselSaved)=>{
                 if(err){
                     console.log("error general al guardar",err);
@@ -28,6 +37,22 @@ function createCarouselDefault(req,res){
         }
     })
 }
+
+function getImageName(req,res){
+    var nameC= "Carousel";
+    var carousel = new Carousel();
+
+    Carousel.findOne({name: nameC},(err,carouselFind)=>{
+        if(err){
+            return res.status(500).send({message:"Error General",err});  
+        }else if(carouselFind){
+            return res.send({message:"carousel encontrado",carouselFind});  
+        }else{
+            return res.send({message:"no se encontró carousel"});  
+        }
+    })
+}
+
 function uploadImgCarousel(req, res){
     var carouselId = req.params.id;
     var fileName = 'Sin imagen';
@@ -72,9 +97,9 @@ function uploadImgCarousel(req, res){
 }
 
 function getImageCarousel(req, res){
+
     var fileName = req.params.fileName;
     var pathFile = './uploads/carousel/' + fileName;
-    var params = req.body;
         fs.exists(pathFile, (exists)=>{
         if(exists){
             return res.sendFile(path.resolve(pathFile))
@@ -121,5 +146,6 @@ module.exports = {
     uploadImgCarousel,
     getImageCarousel,
     deleteImgCarousel,
-    createCarouselDefault
+    createCarouselDefault,
+    getImageName
 }

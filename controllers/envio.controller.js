@@ -93,6 +93,19 @@ function getEnvios(req, res){
     }).populate({path: 'envios', populate:{path:'factura'}});
 }
 
+function getEnviosAdmin(req, res){
+    Envio.find({},(err,envioFind)=>{
+        if(err){
+            return res.status(500).send({message:"error general"});
+        }else if(envioFind){
+            return res.send({message: "Envios: ", envioFind});
+        }else{
+            return res.status(403).send({message:"No se encontraron registros"});
+        }
+    }).populate({path: "factura", populate:{path:"detalles", populate:{path:"producto"}}})
+}
+
+
 function getFac(req, res){
     var facId = req.params.id;
 
@@ -112,5 +125,6 @@ module.exports = {
     deleteEnvio,
     updateEnvio,
     createEnvio,
+    getEnviosAdmin,
     getFac
 }
