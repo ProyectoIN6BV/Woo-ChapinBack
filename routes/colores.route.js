@@ -6,7 +6,7 @@ var mdAuth = require("../middlewares/authenticates");
 
 var api = express.Router();
 
-api.get("/getColores",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],coloresController.getColores);
+api.get("/getColores",coloresController.getColores);
 api.put("/updateColores/:id",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],coloresController.updateColores);
 
 
