@@ -2,6 +2,7 @@
 
 var Envio = require("../models/envio.model");
 var User = require("../models/user.model");
+var Factura = require("../models/factura.model");
 
 function createEnvio(req, res){
     var params = req.body;
@@ -89,12 +90,27 @@ function getEnvios(req, res){
         }else{
             return res.status(403).send({message:"No se encontraron registros"});
         }
-    }).populate("envios");
+    }).populate({path: 'envios', populate:{path:'factura'}});
+}
+
+function getFac(req, res){
+    var facId = req.params.id;
+
+    Factura.findById(facId, (err, facFind)=>{
+        if(err){
+            return res.status(500).send({message:"error general"});
+        }else if(facFind){
+            return res.send({message: "Facturas: ", facFind});
+        }else{
+            return res.status(403).send({message:"No se encontraron registros"});
+        }
+    }).populate({path: 'detalles', populate:{path:'producto'}});
 }
 
 module.exports = {
     getEnvios,
     deleteEnvio,
     updateEnvio,
-    createEnvio
+    createEnvio,
+    getFac
 }
