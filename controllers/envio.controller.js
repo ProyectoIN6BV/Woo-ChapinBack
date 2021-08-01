@@ -125,6 +125,6 @@ module.exports = {
     deleteEnvio,
     updateEnvio,
     createEnvio,
-    getEnviosAdmin
+    getEnviosAdmin,
     getFac
 }
