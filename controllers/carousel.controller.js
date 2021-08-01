@@ -142,10 +142,66 @@ function deleteImgCarousel(req,res){
     })
 }
 
+
+function delteAndUpdate(req, res){
+    var carouselId = req.params.id;
+    var fileNameOne = 'Sin imagen';
+
+    Carousel.findByIdAndUpdate(carouselId, {$pull:{images:{image: fileNameOne}}}, {new:true}, (err, deleteImg)=>{
+        if(err){
+            return res.status(500).send({message: 'Error general'});
+        }else if(deleteImg){
+            if(req.files){
+                var fileName = 'Sin imagen';
+
+                //captura la ruta de la imagen
+                var filePath = req.files.image.path;
+                //separa en indices cada carpeta
+                //si se trabaja en linux ('\');
+                var fileSplit = filePath.split('\\');
+                //captura el nombre de la imagen
+                var fileName = fileSplit[2];
+    
+                var ext = fileName.split('\.');
+                var fileExt = ext[1];
+                
+                if( fileExt == 'png' ||
+                    fileExt == 'jpg' ||
+                    fileExt == 'jpeg' ||
+                    fileExt == 'gif'){
+                        Carousel.findByIdAndUpdate(carouselId, {$push:{images:{image: fileName}}}, {new:true}, (err, imgUpdate)=>{
+                            if(err){
+                                return res.status(500).send({hotel: imgUpdate});
+                            }else if(imgUpdate){
+                                return res.send({hotel: imgUpdate, imgUpdate: imgUpdate.images});
+                            }else{
+                                return res.status(404).send({message: 'No se actualizó'});
+                            }
+                        })
+                    }else{
+                        fs.unlink(filePath, (err)=>{
+                            if(err){
+                                return res.status(500).send({message: 'Error al eliminar y la extensión no es válida'});
+                            }else{
+                                return res.status(403).send({message: 'Extensión no válida, y archivo eliminado'});
+                            }
+                        })
+                    }
+            }else{
+                return res.status(404).send({message: 'No has subido una imagen'});
+            }
+        }else{
+            return res.status(404).send({message: 'No se actualizó'});
+        }
+    })
+}
+
+
 module.exports = {
     uploadImgCarousel,
     getImageCarousel,
     deleteImgCarousel,
     createCarouselDefault,
-    getImageName
+    getImageName,
+    delteAndUpdate
 }

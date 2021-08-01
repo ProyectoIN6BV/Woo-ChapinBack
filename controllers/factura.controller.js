@@ -208,11 +208,12 @@ function totalVendido(req,res){
         }else if(pedidoCount){
 
             facLength = Object.keys(pedidoCount).length;
+
             for (let i = 0; i < facLength; i++){
                 sum = Number.parseInt(pedidoCount[i].total) + sum;
             }
             
-            return res.send({message: "Total vendido", sum})
+            return res.send({message: "Total vendido",sum})
         }else{
             return res.send({message:"no hay pedidos registrados"});
         }
