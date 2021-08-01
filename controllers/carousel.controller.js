@@ -145,7 +145,7 @@ function deleteImgCarousel(req,res){
 
 function delteAndUpdate(req, res){
     var carouselId = req.params.id;
-    var fileNameOne = 'Sin imagen';
+    var fileNameOne = req.params.img;
 
     Carousel.findByIdAndUpdate(carouselId, {$pull:{images:{image: fileNameOne}}}, {new:true}, (err, deleteImg)=>{
         if(err){

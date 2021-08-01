@@ -13,6 +13,6 @@ api.put('/uploadImgCarousel/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin, m
 api.get("/getImageCarousel/:fileName",[mdUpload],carouselController.getImageCarousel);
 api.delete("/deleteImgCarousel/:id",[mdAuth.enshureAuth],carouselController.deleteImgCarousel);
 api.get("/getImageName",carouselController.getImageName);
-api.put('/delteAndUpdate/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin, mdUpload],carouselController.delteAndUpdate);
+api.put('/delteAndUpdate/:id/:img',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin, mdUpload],carouselController.delteAndUpdate);
 
 module.exports = api;
