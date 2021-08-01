@@ -5,10 +5,12 @@ var Categoria = require("../models/categoria.model");
 var Producto = require("../models/producto.model");
 var fs = require("fs");
 var path = require("path")
+
 function createCategoryDefault(req,res){
    var nameCategory = "DEFAULT";
    var descCategory = "CATEGORÍA POR DEFAULT";
    var categoria = new Categoria();
+   
    Categoria.findOne({nameCategoria: nameCategory},(err,categoryFind)=>{
     if(err){
         console.log("error al buscar",err);
@@ -74,6 +76,7 @@ function getCategory(req,res){
 function updateCategory(req,res){
     var params = req.body;
     var categoryId = req.params.categoryId;
+    
     if(params.nameCategoria){
         Categoria.findOne({nameCategoria: params.nameCategoria},(err,categoryFind)=>{
             if(err){

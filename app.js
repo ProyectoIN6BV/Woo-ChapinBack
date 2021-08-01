@@ -13,6 +13,7 @@ var carritoRoutes = require("./routes/carrito.route");
 var carouselRoutes = require("./routes/carousel.route");
 var municipiosRoutes = require("./routes/municipio.route");
 var enviosRoutes = require("./routes/envio.route");
+var coloreRoutes = require("./routes/colores.route");
 
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -35,5 +36,6 @@ app.use("/wooChapin",facturaRoutes);
 app.use("/wooChapin",carouselRoutes);
 app.use("/wooChapin",municipiosRoutes);
 app.use("/wooChapin",enviosRoutes);
+app.use("/wooChapin",coloreRoutes);
 
 module.exports = app;

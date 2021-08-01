@@ -5,6 +5,7 @@ var Carousel = require("../models/carousel.model");
 var mongoose = require("mongoose");
 var fs = require("fs");
 var path = require("path")
+
 function createCarouselDefault(req,res){
     var nameC= "Carousel";
     var carousel = new Carousel();
