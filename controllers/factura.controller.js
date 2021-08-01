@@ -208,10 +208,8 @@ function totalVendido(req,res){
         }else if(pedidoCount){
 
             facLength = Object.keys(pedidoCount).length;
-            console.log(facLength);
-
             for (let i = 0; i < facLength; i++){
-                sum = Number.parseInt(pedidoCount.total) + sum;
+                sum = Number.parseInt(pedidoCount[i].total) + sum;
             }
             
             return res.send({message: "Total vendido", sum})

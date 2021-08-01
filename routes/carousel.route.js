@@ -12,5 +12,5 @@ var api = express.Router();
 api.put('/uploadImgCarousel/:id',[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin, mdUpload],carouselController.uploadImgCarousel);
 api.get("/getImageCarousel/:fileName",[mdUpload],carouselController.getImageCarousel);
 api.delete("/deleteImgCarousel/:id",[mdAuth.enshureAuth],carouselController.deleteImgCarousel);
-
+api.get("/getImageName",carouselController.getImageName);
 module.exports = api;
