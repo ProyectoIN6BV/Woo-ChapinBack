@@ -14,6 +14,8 @@ api.get("/getEnvios/:id",[mdAuth.enshureAuth],envioController.getEnvios);
 api.put("/updateEnvio/:id",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],envioController.updateEnvio);
 api.delete("/deleteCategory/:id",[mdAuth.enshureAuth,mdAuth.enshureAuthAdmin],envioController.deleteEnvio);
 api.get("/getEnviosAdmin",[mdAuth.enshureAuth, mdAuth.enshureAuthAdmin],envioController.getEnviosAdmin);
+api.get("/getFac/:id",[mdAuth.enshureAuth],envioController.getFac);
+
 
 
 module.exports = api;
